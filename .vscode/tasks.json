@@ -1,0 +1,29 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "VOTIEN_DSA1_HK251",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-std=c++17",
+                "-g",
+                "-Isrc",
+                "-I.",
+                "main.cpp",
+                "src/VectorStore.cpp",
+                "tests/*.cpp",
+                "-DTESTING",
+                "-o",
+                "main_debug"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
+        }
+    ]
+}
