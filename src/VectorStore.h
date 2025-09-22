@@ -158,6 +158,7 @@ private:
     int dimension;
     int count;
     EmbedFn embeddingFunction;
+    static int nextId;
 
 public:
     VectorStore(int dimension = 512, EmbedFn embeddingFunction = nullptr);

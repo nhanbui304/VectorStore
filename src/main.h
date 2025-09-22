@@ -10,11 +10,11 @@
 
 using namespace std;
 
-class invalid_metric : public std::logic_error
+class metric_error : public std::logic_error
 {
 public:
-    invalid_metric() : std::logic_error("Invalid metric!") {}
-    explicit invalid_metric(const std::string &what_arg) : std::logic_error(what_arg) {}
+    metric_error() : std::logic_error("Invalid metric!") {}
+    explicit metric_error(const std::string &what_arg) : std::logic_error(what_arg) {}
 };
 
 class invalid_k_value : public std::logic_error

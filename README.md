@@ -145,4 +145,4 @@ euclidean_distance(A, B) = sqrt((a1 - b1)^2 + (a2 - b2)^2 + ... + (an - bn)^2)
 
 ![](images/image.png)
 
-### Function topKNearest gợi ý dùng quick sort độ phức tạp `nlog(n)`, nếu bằng khoảng cách thì ưu tiên index lớn hơn
+### Function topKNearest gợi ý dùng mergesort độ phức tạp `nlog(n)`, nếu bằng khoảng cách thì ưu tiên index lớn hơn

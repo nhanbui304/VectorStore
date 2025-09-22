@@ -2,32 +2,13 @@
 #define TESTHELPER_H
 
 #include "VectorStore.h"
+#include <fstream>
+#include <sstream>
+#include <vector>
 
 class TestHelper
 {
 public:
-    /**
-     * @brief Simple character-based embedding function.
-     *
-     * This function converts a given string into a vector of floats, where each element
-     * represents the sum of alphabetical positions of characters in each word.
-     * Non-alphabetic characters are ignored. Words are separated by spaces.
-     *
-     * Alphabetical positions:
-     *   'a' = 1 'b' = 2 ...'z' = 26
-     *   'A' = -1 'B' = -2 ... 'Z' = -26
-     *
-     * Example:
-     *   Input: "aA BC EE"
-     *   Processing:
-     *     "aA" -> 1 + -1 = 0
-     *     "bc" -> 2 + 3 = 5
-     *     "EE" -> -5 + -5 = -10
-     *   Output vector: [0, 5, -10]
-     *
-     * @param text Input string to be embedded.
-     * @return SinglyLinkedList<float>* Pointer to the dynamically allocated vector representation.
-     */
     static SinglyLinkedList<float> *VOTIENEmbedding(const string &text)
     {
         SinglyLinkedList<float> *vec = new SinglyLinkedList<float>();
@@ -50,23 +31,6 @@ public:
         return vec;
     }
 
-    /**
-     * @brief Count the number of alphabetic characters in each word of the string.
-     *
-     * This function splits the input string by spaces, counts the number of alphabetic
-     * characters in each word, and stores the counts in a vector.
-     *
-     * Example:
-     *   Input: "aA BC EE!"
-     *   Processing:
-     *     "aA" -> 2 alphabetic chars
-     *     "BC" -> 2 alphabetic chars
-     *     "EE!" -> 2 alphabetic chars ('!' ignored)
-     *   Output vector: [2, 2, 2]
-     *
-     * @param text Input string to count characters.
-     * @return SinglyLinkedList<float>* Pointer to the dynamically allocated vector of counts.
-     */
     static SinglyLinkedList<float> *countCharsPerWord(const string &text)
     {
         SinglyLinkedList<float> *vec = new SinglyLinkedList<float>();
@@ -79,9 +43,7 @@ public:
             for (char c : word)
             {
                 if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
-                {
                     count++;
-                }
             }
             vec->add(count);
         }
@@ -89,42 +51,69 @@ public:
         return vec;
     }
 
-    /**
-     * @brief Example action function to double all elements of a vector.
-     *
-     * This function can be passed to VectorStore::forEach to modify each stored vector.
-     *
-     * @param vec Reference to the vector of floats to modify.
-     * @param id ID of the vector (not used in this example).
-     * @param rawText Reference to the original text (not used in this example).
-     */
-    static void doubleVectorElements(SinglyLinkedList<float> &vec, int id, string &rawText)
+    static SinglyLinkedList<float> *encode(const std::string &raw)
     {
-        for (int i = 0; i < vec.size(); i++)
+        SinglyLinkedList<float> *vec = new SinglyLinkedList<float>();
+        std::stringstream ss(raw);
+        float value;
+        while (ss >> value)
         {
-            float &value = vec.get(i);
-            value = value * 2;
+            vec->add(value);
         }
+        return vec;
     }
 
-    static ArrayList<VectorStore::VectorRecord *> &getRecords(VectorStore &store)
+    static SinglyLinkedList<float> *readMNISTLine(const std::string &line)
     {
-        return store.records;
+        SinglyLinkedList<float> *vec = new SinglyLinkedList<float>();
+        std::stringstream ss(line);
+        std::string value;
+
+        while (std::getline(ss, value, ','))
+        {
+            try
+            {
+                float num = std::stof(value);
+                vec->add(num);
+            }
+            catch (...)
+            {
+                // bỏ qua nếu không phải số
+            }
+        }
+
+        return vec;
     }
 
-    static int getDimension(VectorStore &store)
+    static std::vector<std::string> readMNISTFile(const std::string &filename)
     {
-        return store.dimension;
-    }
+        std::ifstream file(filename);
+        std::vector<std::string> lines;
+        std::string line;
 
-    static int getCount(VectorStore &store)
-    {
-        return store.count;
-    }
+        if (!file.is_open())
+        {
+            throw std::runtime_error("Cannot open file: " + filename);
+        }
 
-    static VectorStore::EmbedFn getEmbeddingFunction(VectorStore &store)
+        bool firstLine = true;
+        while (std::getline(file, line))
+        {
+            if (firstLine)
+            {
+                firstLine = false; // bỏ qua dòng đầu tiên
+                continue;
+            }
+
+            if (!line.empty())
+                lines.push_back(line);
+        }
+
+        return lines;
+    }
+    static void resetNextId()
     {
-        return store.embeddingFunction;
+        VectorStore::nextId = 0;
     }
 };
 
