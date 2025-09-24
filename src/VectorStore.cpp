@@ -687,7 +687,9 @@ bool VectorStore::better(const RecordScore& a, const RecordScore& b,
 int VectorStore::findNearest(const SinglyLinkedList<float>& query,
                              const string& metric) const {
   if (records.empty()) return -1;
-
+  if (!(metric == "cosine" || metric == "manhattan" || metric == "euclidean")) {
+    throw metric_error();
+  }
   ArrayList<RecordScore> scores;
 
   // Tính tất cả score
@@ -699,8 +701,6 @@ int VectorStore::findNearest(const SinglyLinkedList<float>& query,
       score = l1Distance(query, *(records.get(i)->vector));
     } else if (metric == "euclidean") {
       score = l2Distance(query, *(records.get(i)->vector));
-    } else {
-      throw metric_error();
     }
     scores.add({score, i});
   }
@@ -739,6 +739,10 @@ void VectorStore::quickSort(ArrayList<RecordScore>& arr, int left, int right,
 
 int* VectorStore::topKNearest(const SinglyLinkedList<float>& query, int k,
                               const string& metric) const {
+  if (!(metric == "cosine" || metric == "manhattan" || metric == "euclidean")) {
+    throw metric_error();
+  }
+
   if (k <= 0 || k > records.size()) {
     throw invalid_k_value();
   }
@@ -754,8 +758,6 @@ int* VectorStore::topKNearest(const SinglyLinkedList<float>& query, int k,
       score = l1Distance(query, *(records.get(i)->vector));
     } else if (metric == "euclidean") {
       score = l2Distance(query, *(records.get(i)->vector));
-    } else {
-      throw metric_error();
     }
     scores.add({score, i});
   }
