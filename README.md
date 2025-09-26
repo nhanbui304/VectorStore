@@ -1,33 +1,4 @@
-# Task 2 Hiện thực danh sách liên kết đơn
-
-## Lệnh chạy
-
-- Biên dịch :
-```sh
-g++ -std=c++17 -o main -I. -Isrc main.cpp tests/*.cpp src/VectorStore.cpp -DTESTING
-```
-
-- Chạy toàn bộ test
-```sh
-./main
-```
-
-- Chạy 1 test cụ thể  `TEST_CASE("VectorStore basic operations")`
-```sh
-./main --test-case="VectorStore basic operations"
-```
-
-
-- Check memory
-```sh
-g++ -std=c++17 -fsanitize=address -fno-omit-frame-pointer -g -O0 -Wall -Wextra -I. -Isrc main.cpp tests/*.cpp src/VectorStore.cpp -DTESTING -o main_memory
-
-./main_memory 
-```
-
-
-- Debug đã cấu hình làm giống task trước là được
-
+# Bài tập lớn DSA 1 HK251: Hiện thực VectorStore
 
 ## VectorStore
 
@@ -145,4 +116,32 @@ euclidean_distance(A, B) = sqrt((a1 - b1)^2 + (a2 - b2)^2 + ... + (an - bn)^2)
 
 ![](images/image.png)
 
-### Function topKNearest gợi ý dùng mergesort độ phức tạp `nlog(n)`, nếu bằng khoảng cách thì ưu tiên index lớn hơn
+### Function topKNearest gợi ý dùng mergesort độ phức tạp `nlog(n)`, nếu bằng khoảng cách thì ưu tiên index nhỏ hơn
+
+## Lệnh chạy
+
+- Biên dịch :
+```sh
+g++ -std=c++17 -o main -I. -Isrc main.cpp tests/*.cpp src/VectorStore.cpp -DTESTING
+```
+
+- Chạy toàn bộ test
+```sh
+./main
+```
+
+- Chạy 1 test cụ thể  `TEST_CASE("VectorStore basic operations")`
+```sh
+./main --test-case="VectorStore basic operations"
+```
+
+
+- Check memory
+```sh
+g++ -std=c++17 -fsanitize=address -fno-omit-frame-pointer -g -O0 -Wall -Wextra -I. -Isrc main.cpp tests/*.cpp src/VectorStore.cpp -DTESTING -o main_memory
+
+./main_memory 
+```
+
+
+- Debug đã cấu hình làm giống task trước là được
