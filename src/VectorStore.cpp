@@ -688,7 +688,7 @@ int VectorStore::findNearest(const SinglyLinkedList<float>& query,
                              const string& metric) const {
   if (records.empty()) return -1;
   if (!(metric == "cosine" || metric == "manhattan" || metric == "euclidean")) {
-    throw metric_error();
+    throw invalid_metric();
   }
   ArrayList<RecordScore> scores;
 
@@ -740,7 +740,7 @@ void VectorStore::quickSort(ArrayList<RecordScore>& arr, int left, int right,
 int* VectorStore::topKNearest(const SinglyLinkedList<float>& query, int k,
                               const string& metric) const {
   if (!(metric == "cosine" || metric == "manhattan" || metric == "euclidean")) {
-    throw metric_error();
+    throw invalid_metric();
   }
 
   if (k <= 0 || k > records.size()) {
