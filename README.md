@@ -34,7 +34,7 @@ Mục tiêu của `VectorStore`:
 
 ### Hàm Embedding
 
-**1. `TestHelper::VOTIENEmbedding`**
+**1. `TestHelper::embedding`**
 
 - Chuyển chuỗi thành vector bằng cách cộng vị trí chữ cái trong từng từ.  
 - Quy ước:  
@@ -144,4 +144,35 @@ g++ -std=c++17 -fsanitize=address -fno-omit-frame-pointer -g -O0 -Wall -Wextra -
 ```
 
 
-- Debug đã cấu hình làm giống task trước là được
+## Chạy bằng Docker
+
+Yêu cầu: đã cài và đang chạy Docker Desktop.
+
+Các lệnh sau chạy trong PowerShell tại thư mục gốc của project:
+
+### 1. Build Docker image
+
+```powershell
+docker build -f .devcontainer/Dockerfile -t vectorstore-dev .
+```
+
+### 2. Mở container
+
+```powershell
+docker run --rm -it -v "$((Get-Location).Path):/workspace" -w /workspace vectorstore-dev bash
+```
+
+### 3. Biên dịch và chạy test trong container
+
+Sau khi đã vào container:
+
+```bash
+g++ -std=c++17 -g -I. -Isrc main.cpp tests/*.cpp src/VectorStore.cpp -DTESTING -o main
+./main
+```
+
+Thoát container bằng lệnh:
+
+```bash
+exit
+```
